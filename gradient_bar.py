@@ -19,8 +19,10 @@ transform=ax.transAxes``) to be independent of the data coordinates.
 # Source: https://matplotlib.org/3.2.0/gallery/lines_bars_and_markers/gradient_bar.html
 
 CHANGELOG:
-    - Added overlay_bar() designed to overlay a 1/2 alpha gradient over bar
-      bar charts to give them more pop.
+    - Added overlay_bar() designed to overlay a 0.6 alpha gradient over bar
+      bar charts to give them more pop. The gradient in overlay_bar() also has a
+      cmap dependent on whether the bar it is overlaying would be blue, green, 
+      or red. 
     - Commented out demo code. 
 """
 import matplotlib.pyplot as plt
@@ -65,17 +67,31 @@ def gradient_image(ax, extent, direction=0.3, cmap_range=(0, 1), **kwargs):
 def gradient_bar(ax, x, y, width=0.5, bottom=0):
     for left, top in zip(x, y):
         right = left + width
-        gradient_image(ax, extent=(left, right, bottom, top),
-                       cmap=plt.cm.Blues_r, cmap_range=(0, 0.8))
+        gradient_image(ax, 
+                       extent=(left, right, bottom, top),
+                       cmap=plt.cm.Blues_r, 
+                       cmap_range=(0, 0.8))
 
-def overlay_bar(br, ax, z):
+def overlay_bar(br, ax, z, is_beta):
     """ Create a 1/2 alpha gradient on-top of a the entries in a bar chart."""
     for b in br:
         w,h = b.get_width(), b.get_height()
         x0, y0 = b.xy       # lower left vertex
-        gradient_image(ax, extent=(x0, x0+w, y0, y0+h), cmap=plt.cm.Blues_r, cmap_range=(0, 1), alpha=0.5, zorder=z)
+        
+        if (is_beta):
+            c_scheme = plt.cm.Blues_r
+        elif (h < 0):
+            c_scheme = plt.cm.Reds_r
+        else:
+            c_scheme = plt.cm.Greens_r
+        
+        gradient_image(ax, 
+                       extent=(x0, x0+w, y0, y0+h), 
+                       cmap=c_scheme,
+                       cmap_range=(0.3, 0.9), 
+                       alpha=0.6, 
+                       zorder=z)
     
-
 
 """ The code I use elsewhere
 for b in br:

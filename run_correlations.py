@@ -145,8 +145,8 @@ kwargs = dict(width=bar_w-0.1, align='center', alpha=1, zorder=3)
 br  = plt.bar(x_positions-bar_w/2+0.03, sorted_betas_list, **kwargs, color=[0, 0.75, 1.0])
 br2 = plt.bar(x_positions+bar_w/2-0.03, sorted_alphas_list, **kwargs, color=colors)
 
-gb.overlay_bar(br, ax1, 5)  #overlay gradient onto the bars
-gb.overlay_bar(br2, ax1, 5) #overlay gradient onto the bars
+gb.overlay_bar(br, ax1, 5, 1)  #overlay gradient onto the bars
+gb.overlay_bar(br2, ax1, 5, 0) #overlay gradient onto the bars
 
 min_value = min(min_alpha, min_beta, 0) # Upper bound of 0
 max_value = max(max_alpha, max_beta, 0) # Lower bound of 0

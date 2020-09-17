@@ -27,9 +27,14 @@ You'll be prompted to choose your benchmarks to compare to. Enter: 1
 
 Finally you'll be asked for a symbol to compare to the benchmarks. Enter any symbol of your choice (note: currently no support for indices ie: SPX, VIX).
 
-[NVDA Example Result](./screens/nvda.png)
+Nvidia Example:
 
-![NVDA Example Result](./screens/nvda.png)
+![NVDA Example Result](./screens/nvda_example.png)
+
+Royal Bank Example:
+
+![RY Example Result](./screens/ry_example.png)
+
 
 ### Customization
 
