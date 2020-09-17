@@ -19,11 +19,11 @@ transform=ax.transAxes``) to be independent of the data coordinates.
 # Source: https://matplotlib.org/3.2.0/gallery/lines_bars_and_markers/gradient_bar.html
 
 CHANGELOG:
-    - Added overlay_bar() designed to overlay a 0.6 alpha gradient over bar
-      bar charts to give them more pop. The gradient in overlay_bar() also has a
-      cmap dependent on whether the bar it is overlaying would be blue, green, 
-      or red. 
-    - Commented out demo code. 
+    - Added overlay_bar() designed to overlay a 0.6 alpha gradient over
+      bar charts to give them more pop. The gradient in overlay_bar()
+      also has a cmap dependent on whether the bar it is overlaying
+      would be blue, green, or red. 
+    - Deleted demo code. 
 """
 import matplotlib.pyplot as plt
 import numpy as np
@@ -73,7 +73,25 @@ def gradient_bar(ax, x, y, width=0.5, bottom=0):
                        cmap_range=(0, 0.8))
 
 def overlay_bar(br, ax, z, is_beta):
-    """ Create a 1/2 alpha gradient on-top of a the entries in a bar chart."""
+    """ 
+    Generate a 0.6 alpha gradient on-top of a the entries
+    in a bar chart.
+
+    Parameters
+    ----------
+    br : 
+        The returned data from a plt.bar chart.
+    ax : Axes
+        The axes to draw on.
+    z : 
+        The z-order to draw the overlay at.
+    is_beta:
+        This function is used to draw overlays on columns 
+        both for two different types of data (alpha/beta). 
+        The is_beta parameter allows for the cmap of the 
+        gradient to be set independently for the two
+        types of data.
+    """
     for b in br:
         w,h = b.get_width(), b.get_height()
         x0, y0 = b.xy       # lower left vertex
@@ -88,37 +106,6 @@ def overlay_bar(br, ax, z, is_beta):
         gradient_image(ax, 
                        extent=(x0, x0+w, y0, y0+h), 
                        cmap=c_scheme,
-                       cmap_range=(0.3, 0.9), 
+                       cmap_range=(0.5, 0.95), 
                        alpha=0.6, 
                        zorder=z)
-    
-
-""" The code I use elsewhere
-for b in br:
-    w,h = b.get_width(), b.get_height()
-    x0, y0 = b.xy       # lower left vertex
-    x1, y1 = x0+w,y0    # lower right vertex
-    x2, y2 = x0,y0+h    # top left vertex
-    x3, y3 = x0+w,y0+h  # top right vertex
-    gradient_bar.gradient_image(ax1, extent=(x0, x1, y0, y2), cmap=plt.cm.Blues_r, cmap_range=(0, 1), alpha=0.5, zorder=5)
-
-
-# Included demo code
-#xmin, xmax = xlim = 0, 10
-#ymin, ymax = ylim = 0, 1
-
-#fig, ax = plt.subplots()
-#ax.set(xlim=xlim, ylim=ylim, autoscale_on=False)
-
-# background image
-#gradient_image(ax, direction=0, extent=(0, 1, 0, 1), transform=ax.transAxes,
-#               cmap=plt.cm.Oranges, cmap_range=(0.1, 0.6))
-
-#N = 10
-#x = np.arange(N) + 0.15
-#y = np.random.rand(N)
-#gradient_bar(ax, x, y, width=0.7)
-#ax.set_aspect('auto')
-#plt.show()
-
-"""

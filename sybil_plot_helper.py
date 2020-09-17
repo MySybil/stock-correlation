@@ -32,18 +32,14 @@ def set_defaults(plt_input):
     plt_input.box(False)
     plt_input.grid(color='black', linestyle='-', linewidth=1.5, alpha=0.1, zorder=0)
     ax_out.xaxis.grid() #only plot horizontal gridlines.
+    ax_out.axhline(linewidth=1, color='black')
     
-    p1patch = mpatches.Patch(color=[0, 0.75, 1.0], label="Benchmark Beta")
-    p2patch = mpatches.Patch(color=[0.9, 0, 0.25], label="Negative uncorrelated return")
-    p3patch = mpatches.Patch(color=[0, 1.0, 0.75], label="Positive uncorrelated return")
+    # Legend handling    
+    p1patch = mpatches.Patch(color=[0, 0.75, 1.0], label="Beta to benchmark")
+    p2patch = mpatches.Patch(color=[0.9, 0, 0.25], label="Negative un-CORR return /yr")
+    p3patch = mpatches.Patch(color=[0, 1.0, 0.75], label="Positive un-CORR return /yr")
     legend = plt.legend(handles=[p1patch, p3patch, p2patch], framealpha=0.25, loc=0, facecolor='white', fontsize=9)
     plt_input.setp(legend.get_texts(), color='black')
-        
-    textboxfont = {'fontname':'DejaVu Sans', 'fontsize':10, 'fontweight':'light'}
-    props = dict(boxstyle='square', facecolor='none', alpha=0, edgecolor='none')
-    ax_out.text(0.90, 1.05, 'MySybil.com', transform=ax_out.transAxes, verticalalignment='top', bbox=props, **textboxfont, color='red')
-    
-    ax_out.axhline(linewidth=1, color='black')
         
     return plt_input, fig_out, ax_out;
 
@@ -52,27 +48,27 @@ def create_labels(offset, ax, betas, alphas):
     kwargs = dict(fontweight='normal', fontsize=7)
     
     # Generate the labels for the beta columns
-    for i, v in enumerate(betas):
-        lbl_text = "{:.2f}".format(v)
+    for x, y in enumerate(betas):
+        lbl_text = "{:.2f}".format(y)
         
-        if (v >= 0):
-            ax.text(i-0.36, v+1*offset, lbl_text, color=[0, 0.75, 1.0], **kwargs)
+        if (y >= 0):
+            ax.text(x-0.36, y+1*offset, lbl_text, color=[0, 0.75, 1.0], **kwargs)
         else:
-            ax.text(i-0.38, v-2*offset, lbl_text, color=[0, 0.75, 1.0], **kwargs)
+            ax.text(x-0.38, y-2*offset, lbl_text, color=[0, 0.75, 1.0], **kwargs)
 
     # Generate the labels for the uncorrelated returns columns
-    for i, v in enumerate(alphas):
-        lbl_text = "{:.1f}%".format(100*v)
+    for x, y in enumerate(alphas):
+        lbl_text = "{:.1f}%".format(100*y)
         
-        if (v >= 0):
-            if (v > 0.1): #spacing fix
-                ax.text(i+0.06, v+1*offset, lbl_text, color=[0, 1.0, 0.75], **kwargs)
+        if (y >= 0):
+            if (y > 0.1): #spacing fix
+                ax.text(x+0.06, y+1*offset, lbl_text, color=[0, 1.0, 0.75], **kwargs)
             else:
-                ax.text(i+0.08, v+1*offset, lbl_text, color=[0, 1.0, 0.75], **kwargs)
+                ax.text(x+0.08, y+1*offset, lbl_text, color=[0, 1.0, 0.75], **kwargs)
         else:
-            if (v < -0.1):
-                ax.text(i+0.06, v-2*offset, lbl_text, color=[0.9, 0, 0.25], **kwargs)
+            if (y < -0.1):
+                ax.text(x+0.06, y-2*offset, lbl_text, color=[0.9, 0, 0.25], **kwargs)
             else:
-                ax.text(i+0.08, v-2*offset, lbl_text, color=[0.9, 0, 0.25], **kwargs)
+                ax.text(x+0.08, y-2*offset, lbl_text, color=[0.9, 0, 0.25], **kwargs)
                 
                 
