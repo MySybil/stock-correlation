@@ -3,7 +3,7 @@
 Dictionaries of custom sets of benchmarks to measure against.
 =============================================================
 
-sybil_benchmarks.py
+sc_benchmarks.py
 Author: Teddy Rowan @ MySybil.com
 Created: December 31, 2019
 Description: Helper code for run_risk_assessment.py. This code allows the user to set the benchmarks they want to compare to without turning the main code base into a disgusting mess.

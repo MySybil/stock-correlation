@@ -3,7 +3,7 @@
 Settings file for benchmark comparison tool.
 ============================================
 
-correlations_settings.py
+sc_settings.py
 Author: Teddy Rowan @ MySybil.com
 Last Modified: August 9, 2020
 Description: This script stores the settings for run_correlations.py and allows the user to more

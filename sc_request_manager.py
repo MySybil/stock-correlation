@@ -3,7 +3,7 @@
 Request handling for benchmark correlation comparison tool.
 ===========================================================
 
-sybil_request_helper.py
+sc_request_manager.py
 Author: Teddy Rowan @ MySybil.com
 Last Modified: August 10, 2020
 Description: this script handles the requests for correlation scripts.
@@ -11,7 +11,7 @@ Description: this script handles the requests for correlation scripts.
 """
 
 import requests
-import correlation_settings
+import sc_settings
 
 root_url = 'https://sandbox.tradier.com/v1/markets'
 
@@ -21,7 +21,7 @@ def get_history(symbol, interval, start_date):
         params={'symbol': symbol, 
                 'interval': interval, 
                 'start': start_date},
-        headers={'Authorization': correlation_settings.api_key(), 
+        headers={'Authorization': sc_settings.api_key(), 
                  'Accept': 'application/json'}
     )
     json_response = response.json()

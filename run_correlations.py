@@ -19,13 +19,13 @@ import numpy as np
 import requests
 import time
 
-import correlation_settings
+import sc_settings
 import gradient_bar as gb
-import sybil_benchmarks as sb
-import sybil_plot_helper as ph
-import sybil_request_helper as rh
+import sc_benchmarks as sb
+import sc_plot_manager as ph
+import sc_request_manager as rh
 
-settings = correlation_settings.get_settings()
+settings = sc_settings.get_settings()
 sb.print_benchmarks()
 try:
     benchmark_dict = sb.select_benchmark(int(input('Select a set of benchmarks: ')))

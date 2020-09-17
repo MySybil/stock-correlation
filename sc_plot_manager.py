@@ -3,7 +3,7 @@
 Plot handling methods for run_correlations.py driver file.
 ==========================================================
 
-sybil_plot_helper.py
+sc_plot_manager.py
 Author: Teddy Rowan @ MySybil.com
 Last Modified: Sept 16, 2020
 Description: Helper code for run_risk_assessment.py. This code abstracts a lot of the plt setup and
