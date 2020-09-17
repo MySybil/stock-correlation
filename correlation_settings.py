@@ -24,10 +24,10 @@ def get_settings():
     dict['rfr'] = 0.002
     """ In decimal form."""
     
-    dict['start_date'] = '2020-01-01'
+    dict['start_date'] = '2019-01-01'
     """ First time period to examine for the alpha/beta calculations. """
 
-    dict['interval'] = 'daily'
+    dict['interval'] = 'weekly'
     """ Interval for the alpha/beta calculations. """
     
     return dict
