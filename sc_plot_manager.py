@@ -61,11 +61,13 @@ def create_labels(offset, ax, betas, alphas):
         lbl_text = "{:.1f}%".format(100*y)
         
         if (y >= 0):
+            """Positve Alpha"""
             if (y > 0.1): #spacing fix
                 ax.text(x+0.06, y+1*offset, lbl_text, color=[0, 1.0, 0.75], **kwargs)
             else:
                 ax.text(x+0.08, y+1*offset, lbl_text, color=[0, 1.0, 0.75], **kwargs)
         else:
+            """Negative Alpha"""
             if (y < -0.1):
                 ax.text(x+0.06, y-2*offset, lbl_text, color=[0.9, 0, 0.25], **kwargs)
             else:

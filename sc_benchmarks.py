@@ -12,6 +12,14 @@ Description: Helper code for run_risk_assessment.py. This code allows the user t
 See a list of many examples at the bottom.
 """
 
+# 0
+def benchmarks_custom(): 
+    output = {}
+    # Add your additional benchmarks here (order independent)
+    # output['NAME'] = 'SYMBOL'
+    output['NASDAQ'] = 'QQQ'
+    return output
+
 def select_benchmark(num):
     if (num == 0):
         return benchmarks_custom()
@@ -34,14 +42,6 @@ def print_benchmarks():
     print("Available benchmarks for comparison: ")
     for key in a:
         print(key + ": " + a[key])
-
-# 0
-def benchmarks_custom(): 
-    output = {}
-    # Add your additional benchmarks here (order independent)
-    # output['NAME'] = 'SYMBOL'
-    output['NASDAQ'] = 'QQQ'
-    return output
 
 # 1
 def benchmarks_common():

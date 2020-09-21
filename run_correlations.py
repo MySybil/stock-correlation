@@ -21,6 +21,7 @@ import time
 
 import sc_settings
 import gradient_bar as gb
+import sc_analysis as sca
 import sc_benchmarks as sb
 import sc_plot_manager as ph
 import sc_request_manager as rh
@@ -126,34 +127,28 @@ for key in sorted_correlations:
 plt, fig, ax1 = ph.set_defaults(plt)
 
 # Determine plot color ranges -- plot green for high correlation, red for negative correlation
-max_alpha = max(sorted_alphas_list) # this list is not sorted
-min_alpha = min(sorted_alphas_list) # this list is not sorted
+extrema =  sca.get_component_extrema(sorted_alphas_list, sorted_betas_list)
 colors = []
 for alpha in list(sorted_alphas_list):
     if (alpha >= 0):
-        color = [0, alpha/max_alpha, 0.25]
+        color = [0, alpha/extrema['max_alpha'], 0.25]
     else:
-        color = [alpha/min_alpha, 0, 0.25]
+        color = [alpha/extrema['min_alpha'], 0, 0.25]
     colors.append(color)
     
-max_beta = max(sorted_betas_list) # this list is sorted. max_beta = sorted_betas_list[0] 
-min_beta = min(sorted_betas_list) # this list is sorted. min_beta = sorted_betas_list[-1]
-
-
+# Plotting. 
 bar_w = 0.5
 kwargs = dict(width=bar_w-0.1, align='center', alpha=1, zorder=3)
 br  = plt.bar(x_positions-bar_w/2+0.03, sorted_betas_list, **kwargs, color=[0, 0.75, 1.0])
 br2 = plt.bar(x_positions+bar_w/2-0.03, sorted_alphas_list, **kwargs, color=colors)
 
-gb.overlay_bar(br, ax1, 5, 1)  #overlay gradient onto the bars
-gb.overlay_bar(br2, ax1, 5, 0) #overlay gradient onto the bars
-
-min_value = min(min_alpha, min_beta, 0) # Upper bound of 0
-max_value = max(max_alpha, max_beta, 0) # Lower bound of 0
+# Overlay gradients onto the columns in the bar chart
+gb.overlay_bar(br, ax1, 5, 1)
+gb.overlay_bar(br2, ax1, 5, 0)
 
 # Re-orient after gradient fucks that up.
 plt.xlim((-0.5, len(sorted_betas_list)-0.5))
-plt.ylim((min_value*1.1, max_value*1.1))
+plt.ylim((extrema['min']*1.1, extrema['max']*1.1))
 ax1.set_aspect('auto')
 
 titlefont = {'fontname':'DejaVu Sans', 'fontsize':11, 'fontweight':'light'}
@@ -162,8 +157,7 @@ plt.xticks(x_positions, benchmark_ticks, color='black', fontname='DejaVu Sans', 
 
 
 # add labels above the bars
-extrema = [min_beta, max_beta, min_alpha, max_alpha]
-v_offset = 0.020*(max(extrema)-min(extrema))
+v_offset = 0.020*(extrema['max']-extrema['min'])
 ph.create_labels(v_offset, ax1, sorted_betas_list, sorted_alphas_list)
     
 plt.show()    
