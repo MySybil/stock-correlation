@@ -1,15 +1,14 @@
 """
-======================================================================
-Generate a bar chart of correlations and relative returns for a stock.
-======================================================================
+===========================================================================
+Generate a bar chart of correlations and risk-adjusted returns for a stock.
+===========================================================================
 
 run_corrleations.py forked from run_risk_asssessment.py
 Author: Teddy Rowan @ MySybil.com
-Last Modified: August 10, 2020
+Last Modified: Sept 22, 2020
 Description: The idea is to give me a much faster and easier way to look at correlations for a single
  stock. Previously had to edit my portfolio analysis software and then create a custom portfolio.
-
-TODO: code abstraction
+ 
 """
 
 from datetime import datetime
@@ -57,20 +56,11 @@ if (stock_history_data == -1):
     exit()
     
 # Traverse through the stock data and calculate the daily percent changes and overall return
-percent_change_data = []
-last_close = 0
-for data in stock_history_data:
-    if (last_close != 0):
-        percent_change_data.append(float(data['close'])/last_close - 1)
-    last_close = data['close']
+symbol_data, symbol_performance = sca.convert_to_percent_change(stock_history_data)
 
-symbol_performance = stock_history_data[-1]['close']/stock_history_data[0]['close'] - 1 #
-symbol_data = percent_change_data
-portfolio_value = stock_history_data[-1]['close']       #last_price * quantity
-portfolio_start_value = stock_history_data[0]['close']  #first_price * quantity
-
-print("Starting Share Price: $%.2f" % portfolio_start_value)
-print("Final Share Price:    $%.2f" % portfolio_value)
+# Print some basic facts about the stock performance for the user.
+print("Starting Share Price: $%.2f" % stock_history_data[0]['close'])
+print("Final Share Price:    $%.2f" % stock_history_data[-1]['close'])
 print("Stock Percent Return: %.2f%%" % (100*symbol_performance))
 
 
@@ -84,15 +74,7 @@ for key in benchmark_dict:
         print("Error Retrieving Benchmark Data. Ignoring data for: " + key)
         continue
     
-    benchmark_percent_change_data = []
-    last_close = 0
-    for data in benchmark_response:
-        if (last_close != 0):
-            benchmark_percent_change_data.append(float(data['close'])/last_close - 1)
-        last_close = data['close']
-
-    benchmark_performance[key] = benchmark_response[-1]['close']/benchmark_response[0]['close'] - 1
-    benchmark_data[key] = benchmark_percent_change_data
+    benchmark_data[key], benchmark_performance[key] = sca.convert_to_percent_change(benchmark_response)
 
 
 # Calcuate the correlations and risk-adjusted performance of the stock vs each benchmark
@@ -123,6 +105,10 @@ for key in sorted_correlations:
     sorted_alphas_list.append(alpha_values[key])
 
 
+
+
+
+
 ## Everything below this is plotting stuff.
 plt, fig, ax1 = ph.set_defaults(plt)
 
@@ -135,7 +121,8 @@ for alpha in list(sorted_alphas_list):
     else:
         color = [alpha/extrema['min_alpha'], 0, 0.25]
     colors.append(color)
-    
+
+
 # Plotting. 
 bar_w = 0.5
 kwargs = dict(width=bar_w-0.1, align='center', alpha=1, zorder=3)
@@ -151,10 +138,10 @@ plt.xlim((-0.5, len(sorted_betas_list)-0.5))
 plt.ylim((extrema['min']*1.1, extrema['max']*1.1))
 ax1.set_aspect('auto')
 
+# Plot visual changes
 titlefont = {'fontname':'DejaVu Sans', 'fontsize':11, 'fontweight':'light'}
 plt.title(title_str, color='black', **titlefont)
 plt.xticks(x_positions, benchmark_ticks, color='black', fontname='DejaVu Sans', fontsize=8)
-
 
 # add labels above the bars
 v_offset = 0.020*(extrema['max']-extrema['min'])
