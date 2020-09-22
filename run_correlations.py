@@ -11,12 +11,10 @@ Description: The idea is to give me a much faster and easier way to look at corr
  
 """
 
-from datetime import datetime
 import matplotlib.pyplot as plt; plt.rcdefaults()
 import matplotlib.patches as mpatches
 import numpy as np
 import requests
-import time
 
 import gradient_bar as gb
 import sc_analysis as sca
@@ -26,6 +24,9 @@ import sc_request_manager as scr #rh
 import sc_settings as scs
 
 settings = scs.get_settings()
+years_of_data = sca.calculate_data_duration(settings['start_date'])
+
+# Print the benchmark choices and prompt the user to select one from the list.
 scb.print_benchmarks()
 try:
     benchmark_dict = scb.select_benchmark(int(input('Select a set of benchmarks: ')))
@@ -43,11 +44,6 @@ title_str = 'Benchmark Correlations for ' + symbol
 # If the symbol is also being used as a benchmark, then remove the benchmark
 benchmark_dict = {key:val for key, val in benchmark_dict.items() if val != symbol}
 
-# Calculate how long the time period we're looking at is so we can annualize alpha.
-datenum = datetime.strptime(settings['start_date'], "%Y-%m-%d")
-timeDiff =  (time.mktime(datetime.now().timetuple())) - (time.mktime(datenum.timetuple()))
-years_of_data = (timeDiff)/(60*60*24*365)
-
 
 # Retrieve and analyze the Symbol Data
 stock_history_data = scr.get_history(symbol, settings['interval'], settings['start_date'])
@@ -57,11 +53,7 @@ if (stock_history_data == -1):
     
 # Traverse through the stock data and calculate the daily percent changes and overall return
 symbol_data, symbol_performance = sca.convert_to_percent_change(stock_history_data)
-
-# Print some basic facts about the stock performance for the user.
-print("Starting Share Price: $%.2f" % stock_history_data[0]['close'])
-print("Final Share Price:    $%.2f" % stock_history_data[-1]['close'])
-print("Stock Percent Return: %.2f%%" % (100*symbol_performance))
+sca.print_basic_return_facts(stock_history_data, symbol_performance)
 
 
 # Retrieve and analyze the Benchmark Data
@@ -105,22 +97,16 @@ for key in sorted_correlations:
     sorted_alphas_list.append(alpha_values[key])
 
 
-
-
-## Everything below this is plotting stuff.
-plt, fig, ax1 = scp.set_defaults(plt)
+"""========================================="""
+""" Everything below this is plotting stuff."""
+"""========================================="""
 
 # Determine plot color ranges -- plot green for high correlation, red for negative correlation
 extrema = sca.get_component_extrema(sorted_alphas_list, sorted_betas_list)
-colors = []
-for alpha in list(sorted_alphas_list):
-    if (alpha >= 0):
-        color = [0, alpha/extrema['max_alpha'], 0.25]
-    else:
-        color = [alpha/extrema['min_alpha'], 0, 0.25]
-    colors.append(color)
+colors = sca.get_alpha_colors(sorted_alphas_list, extrema)
 
 # Plotting. 
+plt, fig, ax1 = scp.set_defaults(plt)
 bar_w = 0.5
 kwargs = dict(width=bar_w-0.1, align='center', alpha=1, zorder=3)
 br  = plt.bar(x_positions-bar_w/2+0.03, sorted_betas_list, **kwargs, color=[0, 0.75, 1.0])
