@@ -18,20 +18,20 @@ import numpy as np
 import requests
 import time
 
-import sc_settings
 import gradient_bar as gb
 import sc_analysis as sca
-import sc_benchmarks as sb
-import sc_plot_manager as ph
-import sc_request_manager as rh
+import sc_benchmarks as scb #sb
+import sc_plot_manager as scp #ph
+import sc_request_manager as scr #rh
+import sc_settings as scs
 
-settings = sc_settings.get_settings()
-sb.print_benchmarks()
+settings = scs.get_settings()
+scb.print_benchmarks()
 try:
-    benchmark_dict = sb.select_benchmark(int(input('Select a set of benchmarks: ')))
+    benchmark_dict = scb.select_benchmark(int(input('Select a set of benchmarks: ')))
 except ValueError:
     print("Invalid input. Using common benchmarks option.")
-    benchmark_dict = sb.select_benchmark(1)
+    benchmark_dict = scb.select_benchmark(1)
 
 benchmark_performance = {} # dictionary of benchmarks and their performances
 
@@ -50,7 +50,7 @@ years_of_data = (timeDiff)/(60*60*24*365)
 
 
 # Retrieve and analyze the Symbol Data
-stock_history_data = rh.get_history(symbol, settings['interval'], settings['start_date'])
+stock_history_data = scr.get_history(symbol, settings['interval'], settings['start_date'])
 if (stock_history_data == -1):
     print("Error downloading stock data. Terminating program.")
     exit()
@@ -68,7 +68,7 @@ print("Stock Percent Return: %.2f%%" % (100*symbol_performance))
 benchmark_data = {}
 for key in benchmark_dict:
     print("Retrieving Benchmark Data: " + key + " [" + benchmark_dict[key] + "]")
-    benchmark_response = rh.get_history(benchmark_dict[key], settings['interval'], settings['start_date'])
+    benchmark_response = scr.get_history(benchmark_dict[key], settings['interval'], settings['start_date'])
 
     if (benchmark_response == -1):
         print("Error Retrieving Benchmark Data. Ignoring data for: " + key)
@@ -107,13 +107,11 @@ for key in sorted_correlations:
 
 
 
-
-
 ## Everything below this is plotting stuff.
-plt, fig, ax1 = ph.set_defaults(plt)
+plt, fig, ax1 = scp.set_defaults(plt)
 
 # Determine plot color ranges -- plot green for high correlation, red for negative correlation
-extrema =  sca.get_component_extrema(sorted_alphas_list, sorted_betas_list)
+extrema = sca.get_component_extrema(sorted_alphas_list, sorted_betas_list)
 colors = []
 for alpha in list(sorted_alphas_list):
     if (alpha >= 0):
@@ -121,7 +119,6 @@ for alpha in list(sorted_alphas_list):
     else:
         color = [alpha/extrema['min_alpha'], 0, 0.25]
     colors.append(color)
-
 
 # Plotting. 
 bar_w = 0.5
@@ -133,18 +130,11 @@ br2 = plt.bar(x_positions+bar_w/2-0.03, sorted_alphas_list, **kwargs, color=colo
 gb.overlay_bar(br, ax1, 5, 1)
 gb.overlay_bar(br2, ax1, 5, 0)
 
-# Re-orient after gradient fucks that up.
-plt.xlim((-0.5, len(sorted_betas_list)-0.5))
-plt.ylim((extrema['min']*1.1, extrema['max']*1.1))
-ax1.set_aspect('auto')
-
-# Plot visual changes
-titlefont = {'fontname':'DejaVu Sans', 'fontsize':11, 'fontweight':'light'}
-plt.title(title_str, color='black', **titlefont)
-plt.xticks(x_positions, benchmark_ticks, color='black', fontname='DejaVu Sans', fontsize=8)
+scp.reorient_plot(ax1, len(sorted_betas_list), extrema['min'], extrema['max'])
+scp.customize_plot(title_str, x_positions, benchmark_ticks)
 
 # add labels above the bars
 v_offset = 0.020*(extrema['max']-extrema['min'])
-ph.create_labels(v_offset, ax1, sorted_betas_list, sorted_alphas_list)
+scp.create_labels(v_offset, ax1, sorted_betas_list, sorted_alphas_list)
     
 plt.show()    

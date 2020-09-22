@@ -39,9 +39,25 @@ def set_defaults(plt_input):
     p2patch = mpatches.Patch(color=[0.9, 0, 0.25], label="Negative un-CORR return /yr")
     p3patch = mpatches.Patch(color=[0, 1.0, 0.75], label="Positive un-CORR return /yr")
     legend = plt.legend(handles=[p1patch, p3patch, p2patch], framealpha=0.25, loc=0, facecolor='white', fontsize=9)
-    plt_input.setp(legend.get_texts(), color='black')
-        
+    plt_input.setp(legend.get_texts(), color='black')    
+    
     return plt_input, fig_out, ax_out;
+
+def reorient_plot(ax, n_points, y_min, y_max):
+    plt.xlim((-0.5, n_points-0.5))
+
+    min_modifier = 0.9 if (y_min > 0) else 1.1
+    max_modifier = 1.1 if (y_max > 0) else 0.9
+
+    plt.ylim((y_min*min_modifier, y_max*max_modifier))
+    ax.set_aspect('auto')
+
+# Add a title to the plot and override the tick labels
+def customize_plot(title, x_ticks, x_tick_titles):
+    titlefont = {'fontname':'DejaVu Sans', 'fontsize':11, 'fontweight':'light'}
+    plt.title(title, color='black', **titlefont)
+    plt.xticks(x_ticks, x_tick_titles, color='black', fontname='DejaVu Sans', fontsize=8)
+    
 
 # Create the labels above/below the bars that let us remove the y-ticks and clean up the figure
 def create_labels(offset, ax, betas, alphas):
@@ -72,5 +88,4 @@ def create_labels(offset, ax, betas, alphas):
                 ax.text(x+0.06, y-2*offset, lbl_text, color=[0.9, 0, 0.25], **kwargs)
             else:
                 ax.text(x+0.08, y-2*offset, lbl_text, color=[0.9, 0, 0.25], **kwargs)
-                
                 
