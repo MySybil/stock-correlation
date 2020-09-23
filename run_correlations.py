@@ -58,7 +58,7 @@ if (stock_history_data == -1):
 symbol_data, symbol_performance = sca.convert_to_percent_change(stock_history_data)
 # Traverse the stock data and calculate the daily percent changes and overall return
 
-sca.print_basic_return_facts(stock_history_data, symbol_performance)
+sca.print_basic_return_facts(stock_history_data)
 # Display some basic details about the stock's performance
 
 
@@ -108,7 +108,6 @@ for key in sorted_correlations:
     sorted_alphas_list.append(alpha_values[key])
 
 
-
 """
 ==========================================
  Everything below this is plotting stuff.
@@ -125,7 +124,7 @@ plt, fig, ax1 = scp.set_defaults(plt)
 # Default plot design / settings
 
 bar_w = 0.5
-# Column Width
+# Column width for barchart
 
 kwargs = dict(width=bar_w-0.1, align='center', alpha=1, zorder=3)
 # Shared plot settings between alpha/beta columns
