@@ -43,6 +43,7 @@ def set_defaults(plt_input):
     
     return plt_input, fig_out, ax_out;
 
+# Reorient the plot after it gets screwed up by the gradient overlays
 def reorient_plot(ax, n_points, y_min, y_max):
     plt.xlim((-0.5, n_points-0.5))
 
