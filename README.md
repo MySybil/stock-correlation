@@ -1,6 +1,6 @@
 # MySybil's Stock Correlation Analyzer
 
-This set of scripts aim to provide a quick and dirty way to check the correlation and uncorrelated performance of a stock with any index or security that you want to analyze. There are already some websites out there that do this, but the main hope of this is to provide you a small amount of independence from your broker and any websites trying to make money off of you.
+This set of scripts aim to provide a quick and dirty way to check the correlation and uncorrelated performance (CAPM Alpha/Beta) of a stock with any index or security that you want to analyze. There are already some websites out there that do this, but the main hope of these scripts is to provide you a small amount of independence from your broker and any websites trying to make money off of you.
 
 The scripts are plug-and-play from a Python3 CLI, but if you decide to use them on an ongoing basis I do ask that you create your own account at developer.tradier.com and generate your own API token in order to alleviate any potential strain on the communal key provided. It's free, it only takes 30 seconds, and you'll never have to worry about fighting with other users around rate-limiting. 
 
@@ -27,18 +27,22 @@ You'll be prompted to choose your benchmarks to compare to. Enter: 1
 
 Finally you'll be asked for a symbol to compare to the benchmarks. Enter any symbol of your choice (note: currently no support for indices ie: SPX, VIX).
 
-Nvidia Example:
+Amazon Example:
 
-![NVDA Example Result](./screens/nvda_example.png)
+![AMZN Example Result](./screens/amzn_example.png)
 
-Royal Bank Example:
+United States Oil Fund Example:
 
-![RY Example Result](./screens/ry_example.png)
+![USO Example Result](./screens/energy_global.png)
+
+JP Morgan Example:
+
+![USO Example Result](./screens/jpm_example.png)
 
 
 ### Customization
 
-All the customization for the scripts is handled in the sybil_benchmarks.py (to add your own customized benchmarks or modify the examples) and in correlation_settings.py (if you want to swap in your own API key, change the interval, start date, or risk-free rate).
+All the customization for the scripts is handled in the sc_benchmarks.py (to add your own customized benchmarks or modify the examples) and in sc_settings.py (if you want to swap in your own API key, change the interval, start date, or risk-free rate).
 
 
 ## Additional Notes

@@ -65,7 +65,9 @@ def benchmarks_global():
     output['China'] = 'MCHI' 
     output['UK'] = 'EWU'
     output['Saudi Arabia'] = 'KSA'
+    output['Japan'] = 'EWJ'
     output['Turkey'] = 'TUR'
+    output['Eurozone'] = 'EZU'
     
     return output
 
@@ -87,7 +89,9 @@ Pre-made for reference.
     output['China'] = 'MCHI' 
     output['DJIX'] = 'IYY'
     output['Energy'] = 'USO'
+    output['Eurozone'] = 'EZU'
     output['Gold'] = 'GLD'
+    output['Japan'] = 'EWJ'
     output['MJ'] = 'MJ'    
     output['NASDAQ'] = 'QQQ'
     output['REITs'] = 'VNQ'    
