@@ -31,13 +31,15 @@ Amazon Example:
 
 ![AMZN Example Result](./screens/amzn_example.png)
 
-United States Oil Fund Example:
+United States Oil Fund Example (Int'l Correlations):
 
 ![USO Example Result](./screens/energy_global.png)
 
 JP Morgan Example:
 
 ![USO Example Result](./screens/jpm_example.png)
+
+
 
 
 ### Customization
