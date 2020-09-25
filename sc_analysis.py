@@ -97,10 +97,14 @@ def get_alpha_colors(sorted_alphas, extrema_dict):
     colors = []
     for alpha in list(sorted_alphas):
         if (alpha >= 0):
-            color = [0, alpha/extrema_dict['max_alpha'], 0.25]
+            color = [0.00, 
+                     0.50 + 0.50*alpha/extrema_dict['max_alpha'], 
+                     0.25]
             # Positive alphas are green-scaled
         else:
-            color = [alpha/extrema_dict['min_alpha'], 0, 0.25]
+            color = [0.50 + 0.50*alpha/extrema_dict['min_alpha'], 
+                     0.00, 
+                     0.25]
             # Negative alphas are red-scaled
         colors.append(color)
 
