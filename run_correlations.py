@@ -79,28 +79,39 @@ for key in benchmark_dict:
     # Convert the daily close data to percent change data
 
 
-alpha_values = {} # the alpha for each individual benchmark
-beta_values = {}  # the beta for each individual benchmark
+alpha_values = {}
+beta_values = {}
+# Dictionaries to store the CAPM results
+
 annu_port = pow((1+symbol_performance), 1/years_of_data)-1
 # Calculate the annualized portfolio return
 
 # Calcuate the correlations and risk-adjusted performance of the stock vs each benchmark    
 for benchmark_key in benchmark_data:
+    annu_market = pow((1+benchmark_performance[benchmark_key]), 1/years_of_data)-1
+    # Calculate the annualized return of the benchmark
+
     result_mat = np.cov(np.stack((symbol_data, benchmark_data[benchmark_key]), axis = 0))
-    annu_market = pow((1+benchmark_performance[benchmark_key]), 1/years_of_data)-1 # annualized benchmark return
-        
-    beta = result_mat[1][0]/result_mat[1][1]
-    alpha = (pow((1+symbol_performance), 1/years_of_data)-1) - settings['rfr'] - beta*(annu_market - settings['rfr'])
+    # Generate a covariance matrix between the symbol and the benchmark
     
-    alpha_values[benchmark_key] = alpha
-    beta_values[benchmark_key] = beta
+    beta_values[benchmark_key] = result_mat[1][0]/result_mat[1][1]
+    # Calculate the beta from the covariance matrix
+    
+    alpha_values[benchmark_key] = (pow((1+symbol_performance), 1/years_of_data)-1) - settings['rfr'] - beta_values[benchmark_key]*(annu_market - settings['rfr'])
+    # Calculate the alpha from the performance and beta result
+    
 
-
-# Sort the betas so that we can bar chart them in order. 
 sorted_correlations = dict(sorted(beta_values.items(), key = lambda kv:(kv[1], kv[0]), reverse=True))
+# Sort the betas so that we can plot the benchmarks in order of correlation
+
 benchmark_ticks = sorted_correlations.keys()
-x_positions = np.arange(len(benchmark_ticks)) # get 0 through N-1 positions for plotting
+# Create a list of the tick values in plot-order
+
+x_positions = np.arange(len(benchmark_ticks))
+# Array of 0 to N-1 as positions for plotting the columns
+
 sorted_betas_list = sorted_correlations.values()
+# Extract the beta values for the chart
 
 # Take the sort order from the betas and sort the alphas to match
 sorted_alphas_list = []
