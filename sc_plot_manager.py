@@ -16,23 +16,35 @@ import matplotlib.patches as mpatches
 # Assign the default plot settings for the figure.
 def set_defaults(plt_input):
     plt_input.rcParams['figure.figsize'] = (8.4, 4.2)
+    # Default figure size. 2-to-1 width to height
+
     plt_input.rcParams['figure.subplot.left'] = 0.05
     plt_input.rcParams['figure.subplot.top'] = 0.92
     plt_input.rcParams['figure.subplot.right'] = 0.95
-    plt_input.rcParams["axes.linewidth"] = 0.75
-    plt_input.rcParams["axes.edgecolor"] = "0.0"
-    
+    # Position the chart in the figure
+        
     fig_out = plt_input.figure()
     ax_out = plt_input.subplot2grid((1,1), (0,0))
+    # Assign the outputs to return.
     
     ax_out.xaxis.set_ticks_position('none')
     ax_out.yaxis.set_ticks_position('none')
+    # Don't print the tick dashes at the boundaries of the grid
     
     plt_input.yticks(alpha=0)
+    # Don't print the ticks on the vertical axis
+    
     plt_input.box(False)
+    # Don't print a border around the plot
+    
     plt_input.grid(color='black', linestyle='-', linewidth=1.5, alpha=0.1, zorder=0)
-    ax_out.xaxis.grid() #only plot horizontal gridlines.
+    # Gridline styling
+    
+    ax_out.xaxis.grid()
+    # Only plot horizontal gridlines.
+
     ax_out.axhline(linewidth=1, color='black')
+    # Plot the x-axis zero-line
     
     # Legend handling    
     p1patch = mpatches.Patch(color=[0, 0.75, 1.0], label="Beta to benchmark")
@@ -46,9 +58,11 @@ def set_defaults(plt_input):
 # Reorient the plot after it gets screwed up by the gradient overlays
 def reorient_plot(ax, n_points, y_min, y_max):
     plt.xlim((-0.5, n_points-0.5))
+    # The columns are plotted at x=0,1,2,...,n-1
 
     min_modifier = 0.9 if (y_min > 0) else 1.1
     max_modifier = 1.1 if (y_max > 0) else 0.9
+    # Modifier values to set chart limits big enough to show the labels
 
     plt.ylim((y_min*min_modifier, y_max*max_modifier))
     ax.set_aspect('auto')
@@ -62,16 +76,19 @@ def customize_plot(title, x_ticks, x_tick_titles):
 
 # Create the labels above/below the bars that let us remove the y-ticks and clean up the figure
 def create_labels(offset, ax, betas, alphas):
-    kwargs = dict(fontweight='normal', fontsize=7)
+    kwargs   = dict(fontweight='normal', fontsize=7)
+    sc_blue  = [0, 0.75, 1.0]
+    sc_green = [0, 1.0, 0.75]
+    sc_red   = [0.9, 0, 0.25]
     
     # Generate the labels for the beta columns
     for x, y in enumerate(betas):
         lbl_text = "{:.2f}".format(y)
         
         if (y >= 0):
-            ax.text(x-0.36, y+1*offset, lbl_text, color=[0, 0.75, 1.0], **kwargs)
+            ax.text(x-0.36, y+1*offset, lbl_text, color=sc_blue, **kwargs)
         else:
-            ax.text(x-0.38, y-2*offset, lbl_text, color=[0, 0.75, 1.0], **kwargs)
+            ax.text(x-0.38, y-2*offset, lbl_text, color=sc_blue, **kwargs)
 
     # Generate the labels for the uncorrelated returns columns
     for x, y in enumerate(alphas):
@@ -80,13 +97,13 @@ def create_labels(offset, ax, betas, alphas):
         if (y >= 0):
             """Positve Alpha"""
             if (y > 0.1): #spacing fix
-                ax.text(x+0.06, y+1*offset, lbl_text, color=[0, 1.0, 0.75], **kwargs)
+                ax.text(x+0.06, y+1*offset, lbl_text, color=sc_green, **kwargs)
             else:
-                ax.text(x+0.08, y+1*offset, lbl_text, color=[0, 1.0, 0.75], **kwargs)
+                ax.text(x+0.08, y+1*offset, lbl_text, color=sc_green, **kwargs)
         else:
             """Negative Alpha"""
             if (y < -0.1):
-                ax.text(x+0.06, y-2*offset, lbl_text, color=[0.9, 0, 0.25], **kwargs)
+                ax.text(x+0.06, y-2*offset, lbl_text, color=sc_red, **kwargs)
             else:
-                ax.text(x+0.08, y-2*offset, lbl_text, color=[0.9, 0, 0.25], **kwargs)
+                ax.text(x+0.08, y-2*offset, lbl_text, color=sc_red, **kwargs)
                 
