@@ -24,6 +24,8 @@ def get_settings():
     dict['rfr'] = 0.002
     """ In decimal form."""
     
+    #dict['start_date'] = '2020-08-15' #reduced for $KRBN
+    #dict['start_date'] = '2021-04-17' #reduced for $COIN
     dict['start_date'] = '2019-01-01'
     """ First time period to examine for the alpha/beta calculations. """
 

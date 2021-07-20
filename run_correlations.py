@@ -134,6 +134,10 @@ colors = sca.get_alpha_colors(sorted_alphas_list, extrema)
 plt, fig, ax1 = scp.set_defaults(plt)
 # Default plot design / settings
 
+print(type(plt))
+print(type(fig))
+print(type(ax1))
+
 bar_w = 0.5
 # Column width for barchart
 

@@ -13,8 +13,26 @@ Description: Helper code for run_risk_assessment.py. This code abstracts a lot o
 import matplotlib.pyplot as plt; plt.rcdefaults()
 import matplotlib.patches as mpatches
 
-# Assign the default plot settings for the figure.
 def set_defaults(plt_input):
+    """
+    Assign the default plot settings to the input figure.
+    
+    Parameters
+    ----------
+    plt_input :
+        A matplotlib plt module
+        
+    Returned Variables [3]
+    ----------------------
+    <module> :
+        The input plt input module with updated settings
+    <matplotlib.figure.Figure> :
+        The figure for the module
+    <matplotlib.axes._subplots.AxesSubplot> :
+        The axes object for the plot.
+    """
+    
+    
     plt_input.rcParams['figure.figsize'] = (8.4, 4.2)
     # Default figure size. 2-to-1 width to height
 
@@ -55,8 +73,28 @@ def set_defaults(plt_input):
     
     return plt_input, fig_out, ax_out;
 
-# Reorient the plot after it gets screwed up by the gradient overlays
+
 def reorient_plot(ax, n_points, y_min, y_max):
+    """
+    Reset the window for the plot after gradient_bar() screws up the viewer.
+    
+    Parameters
+    ----------
+    ax :
+        The plot axis
+    n_points :
+        The number of sets of columns in the bar chart.
+    y_min :
+        The smallest value for a data point in the dataset
+    y_max :
+        The largest value for a data point in the dataset
+
+        
+    Returned Variables [nil]
+    ------------------------
+    
+    """
+    
     plt.xlim((-0.5, n_points-0.5))
     # The columns are plotted at x=0,1,2,...,n-1
 
@@ -67,15 +105,52 @@ def reorient_plot(ax, n_points, y_min, y_max):
     plt.ylim((y_min*min_modifier, y_max*max_modifier))
     ax.set_aspect('auto')
 
-# Add a title to the plot and override the tick labels
+
 def customize_plot(title, x_ticks, x_tick_titles):
+    """
+    Graphical customization of the plot based on the data contained. Currently
+    this means settings the title for the figure and overriding the tick labels.
+    
+    Parameters
+    ----------
+    title :
+        <str> Title for the figure.
+    x_ticks :
+        The list of x_ticks for the figure.
+    x_tick_titles :
+        The new strings to override the current x_tick_labels        
+
+    Returned Variables [nil]
+    ------------------------
+    
+    """
+    
     titlefont = {'fontname':'DejaVu Sans', 'fontsize':11, 'fontweight':'light'}
     plt.title(title, color='black', **titlefont)
     plt.xticks(x_ticks, x_tick_titles, color='black', fontname='DejaVu Sans', fontsize=8)
     
 
-# Create the labels above/below the bars that let us remove the y-ticks and clean up the figure
 def create_labels(offset, ax, betas, alphas):
+    """
+    Create the labels above/below the bars that let us remove the y-ticks 
+    and clean up the figure.
+    
+    Parameters
+    ----------
+    offset :
+        <float> Standard spacing offset for the labels.
+    ax :
+        The plot axis.
+    betas :
+        A <list> of the beta/correlations for the benchmarks
+    alphas :
+        A <list> of the alpha/performance vs the benchmarks
+
+    Returned Variables [nil]
+    ------------------------
+    
+    """
+    
     kwargs   = dict(fontweight='normal', fontsize=7)
     sc_blue  = [0, 0.75, 1.0]
     sc_green = [0, 1.0, 0.75]

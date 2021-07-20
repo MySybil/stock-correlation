@@ -51,9 +51,9 @@ def benchmarks_common():
     output['Energy'] = 'USO'
     output['Gold'] = 'GLD'
     output['China'] = 'MCHI' 
-    output['REITs'] = 'VNQ'    
+    #output['REITs'] = 'VNQ'    
     output['Bitcoin'] = 'GBTC'
-    output['MJ'] = 'MJ'
+    #output['MJ'] = 'MJ'
     
     return output
 
